@@ -21,8 +21,6 @@ class UpdateLogsModel(BaseModel):
         schema_extra = {
             "example": {
                 "FlowID": "John Doe",
-                "SrcIP": "jdoe@x.edu.ng",
-                "SrcPort": "Water resources and environmental engineering",
             }
         }
 

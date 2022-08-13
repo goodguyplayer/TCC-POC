@@ -9,6 +9,12 @@ database = client.Projeto_TCC
 
 logs_collection = database.get_collection("logs")
 
+def getlogs_helper(log) -> dict:
+    return {
+        "id": str(log["_id"]),
+        "FlowID": log["Flow ID"],
+    }
+
 def logs_helper(log) -> dict:
     return {
         "id": str(log["_id"]),
@@ -19,7 +25,7 @@ def logs_helper(log) -> dict:
 async def retrieve_logs():
     logs = []
     async for logs in logs_collection.find():
-        logs.append(logs_helper(logs))
+        logs.append(getlogs_helper(logs))
     return logs
 
 async def add_logs_data(logs_data: dict) -> dict:
@@ -30,7 +36,7 @@ async def add_logs_data(logs_data: dict) -> dict:
 async def retrieve_log(id: str) -> dict:
     logs = await logs_collection.find_one({"_id": ObjectId(id)})
     if logs:
-        return logs_helper(logs)
+        return getlogs_helper(logs)
 
 async def update_logs(id: str, data: dict):
     # Return false if an empty request body is sent.

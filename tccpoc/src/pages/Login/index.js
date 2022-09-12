@@ -43,7 +43,7 @@ const Login = () => {
             setError("Preencha todos os campos");
             return;
         }
-        navigate("/signup");
+        navigate("/cadastrar");
     };
 
     return (
@@ -81,7 +81,7 @@ const Login = () => {
                     </div>
                     <button type="submit">Entrar</button>
                     <h4>Não possui conta?</h4>
-                    <Link to="/signup" className="link-cadastro">&nbsp;<em>Cadastre-se </em></Link>
+                    <Link to="/cadastrar" className="link-cadastro">&nbsp;<em>Cadastre-se </em></Link>
 
                 </div>
             </div>

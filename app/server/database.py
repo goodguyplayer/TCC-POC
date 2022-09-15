@@ -8,6 +8,7 @@ client = motor.motor_asyncio.AsyncIOMotorClient(MONGO_DETAILS)
 database = client.Projeto_TCC
 
 logs_collection = database.get_collection("logs")
+login_collection = database.get_collection("login")
 
 def getlogs_helper(log) -> dict:
     return {
@@ -19,6 +20,13 @@ def logs_helper(log) -> dict:
     return {
         "id": str(log["_id"]),
         "FlowID": log["FlowID"],
+    }
+
+def getlogin_helper(login) -> dict:
+    return {
+        "id": str(login["_id"]),
+        "email": str(login["email"]),
+        "senha": login["senha"],
     }
 
 # Retrieve all logs present in the database
@@ -56,3 +64,21 @@ async def delete_log(id: str):
     if log:
         await logs_collection.delete_one({"_id": ObjectId(id)})
         return True
+
+#Login
+async def retrieve_logins():
+    login = []
+    async for login in login_collection.find():
+        return getlogin_helper(login)
+        # login.append(getlogin_helper(login))
+
+
+async def retrieve_login(id: str) -> dict:
+    login = await login_collection.find_one({"_id": ObjectId(id)})
+    if login:
+        return getlogin_helper(login)
+
+async def add_login_data(login_data: dict) -> dict:
+    login = await login_collection.insert_one(login_data)
+    new_login = await login_collection.find_one({"_id": login.inserted_id})
+    return getlogin_helper(new_login)

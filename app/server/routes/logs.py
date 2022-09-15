@@ -6,13 +6,20 @@ from server.database import (
     add_logs_data,
     retrieve_log,
     update_logs,
-    delete_log
+    delete_log,
+    retrieve_logins,
+    retrieve_login,
+    add_login_data,
 )
 from server.models.logs import (
     ErrorResponseModel,
     ResponseModel,
     LogsSchema,
     UpdateLogsModel
+)
+
+from server.models.login import (
+    LoginSchema
 )
 
 router = APIRouter()
@@ -64,3 +71,25 @@ async def delete_logs_data(id: str):
     return ErrorResponseModel(
         "An error occurred", 404, "Log with id {0} doesn't exist".format(id)
     )
+
+@router.get("/login", response_description="Login retrieved")
+async def get_logs():
+    login = await retrieve_logins()
+    if login:
+        return ResponseModel(login, "Login data retrieved successfully")
+    return ResponseModel(login, "Empty list returned")
+
+
+@router.get("/login/{id}", response_description="Login data retrieved")
+async def get_logs_data(id):
+    login = await retrieve_login(id)
+    if login:
+        return ResponseModel(login, "Login data retrieved successfully")
+    return ErrorResponseModel("An error occurred.", 404, "Login doesn't exist.")
+
+@router.post("/login", response_description="login data added into the database")
+async def add_login(login: LoginSchema = Body(...)):
+    print('ok')
+    login = jsonable_encoder(login)
+    new_login = await add_login_data(login)
+    return ResponseModel(new_login, "Login added successfully.")

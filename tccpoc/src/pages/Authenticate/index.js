@@ -3,8 +3,8 @@ import "./authenticate.css";
 import { MdEmail, MdLock } from "react-icons/md";
 import { HiEye, HiEyeOff } from "react-icons/hi";
 import { Link, useNavigate } from "react-router-dom";
-import { withRouter } from "react-router-dom";
 import { AiOutlineUnlock } from "react-icons/ai"
+import axios from 'axios';
 
 const Cadastro = () => {
     const [error, setError] = useState("");
@@ -15,6 +15,7 @@ const Cadastro = () => {
     const [senha, setSenha] = useState("");
     const [senhaConf, setSenhaConf] = useState("");
     const navigate = useNavigate();
+    const serverEndPoint = 'http://127.0.0.1:8000';
 
     const handleChange = (event) => {
         const name = event.target.name;
@@ -37,6 +38,17 @@ const Cadastro = () => {
         e.preventDefault();
         setShow(!show);
     };
+
+    const handleCreate = async () => {
+        try {
+            const upload = await axios.post(`${serverEndPoint}/logs/login`, { email: inputs.email , senha: inputs.password, confsenha: inputs.confirm_password })
+            console.log(upload)
+            navigate("/inicio");
+          } catch (e) {
+            console.log(e)
+          }
+          alert("Usuário cadatrado com sucesso!");
+    }
 
     return (
         // onSubmit -> envia p formulario
@@ -88,7 +100,7 @@ const Cadastro = () => {
                             )}
                         </div>
                     </div>
-                    <button type="submit">Criar</button>
+                    <button type="submit" onClick={handleCreate}>Inscrever-se</button>
                     <h4>Já possui uma conta?</h4>
                     <Link to="/login" className="link-cadastro">&nbsp;<em>Entre </em></Link>
 

@@ -18,7 +18,7 @@ const Home = () =>{
         <Grid container spacing={0} direction="column" alignItems="center" justifyContent="center" style={{ minHeight: '100vh' }} >
           <Grid item xs={3}>
             <Typography variant="h2" style={{ marginBottom: '30px' }}>
-              Page to send an api
+              Enviar o arquivo csv para a inteligencia Artificial 
             </Typography>
             <label htmlFor="contained-button-file">
               <Input onChange={handleUpload} style={{ display: 'none' }} accept="image/*" id="contained-button-file" multiple type="file" />

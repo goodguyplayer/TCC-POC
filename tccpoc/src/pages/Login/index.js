@@ -14,7 +14,7 @@ const Login = () => {
     const navigate = useNavigate();
 
     var id = "631f3f0bc800c41e97a2dc3a";
-    const BaseURL = `http://127.0.0.1:8000/logs/login/${id}`;
+    const BaseURL = `http://127.0.0.1:8000/login/${id}`;
 
     const handleChange = (event) => {
         const name = event.target.name;
@@ -37,7 +37,6 @@ const Login = () => {
             const get = await axios.get(BaseURL)
             console.log(get.data.data[0].senha);
             if (get.data.data[0].email === inputs.email && get.data.data[0].senha === inputs.password) {
-                //setUser({ email, senha });
                 navigate("/inicio");
                 return;
             } else {

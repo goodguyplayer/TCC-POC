@@ -24,12 +24,12 @@ class UpdateLogsModel(BaseModel):
             }
         }
 
-def ResponseModel(data, message):
+def ResponseModelLogs(data, message):
     return {
         "data": [data],
         "code": 200,
         "message": message,
     }
 
-def ErrorResponseModel(error, code, message):
+def ErrorResponseModelLogs(error, code, message):
     return {"error": error, "code": code, "message": message}

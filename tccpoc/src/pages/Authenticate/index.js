@@ -41,7 +41,7 @@ const Cadastro = () => {
 
     const handleCreate = async () => {
         try {
-            const upload = await axios.post(`${serverEndPoint}/logs/login`, { email: inputs.email , senha: inputs.password, confsenha: inputs.confirm_password })
+            const upload = await axios.post(`${serverEndPoint}/login`, { email: inputs.email , senha: inputs.password, confsenha: inputs.confirm_password })
             console.log(upload)
             navigate("/inicio");
           } catch (e) {

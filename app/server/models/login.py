@@ -9,3 +9,13 @@ class LoginSchema(BaseModel):
                 "senha": "minhasenha123",
             }
         }
+
+def ResponseModelLogin(data, message):
+    return {
+        "data": [data],
+        "code": 200,
+        "message": message,
+    }
+
+def ErrorResponseModelLogin(error, code, message):
+    return {"error": error, "code": code, "message": message}

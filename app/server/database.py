@@ -82,3 +82,22 @@ async def add_login_data(login_data: dict) -> dict:
     login = await login_collection.insert_one(login_data)
     new_login = await login_collection.find_one({"_id": login.inserted_id})
     return getlogin_helper(new_login)
+
+async def update_logins(id: str, data: dict):
+    # Return false if an empty request body is sent.
+    if len(data) < 1:
+        return False
+    login = await login_collection.find_one({"_id": ObjectId(id)})
+    if login:
+        updated_login = await login_collection.update_one(
+            {"_id": ObjectId(id)}, {"$set": data}
+        )
+        if updated_login:
+            return True
+        return False
+
+async def delete_login(id: str):
+    login = await login_collection.find_one({"_id": ObjectId(id)})
+    if login:
+        await login_collection.delete_one({"_id": ObjectId(id)})
+        return True

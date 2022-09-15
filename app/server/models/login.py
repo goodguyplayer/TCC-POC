@@ -1,3 +1,4 @@
+from typing import Optional
 from pydantic import BaseModel, Field
 class LoginSchema(BaseModel):
     email: str = Field(...)
@@ -7,6 +8,17 @@ class LoginSchema(BaseModel):
             "example": {
                 "email": "email@email.com",
                 "senha": "minhasenha123",
+            }
+        }
+
+class UpdateLoginModel(BaseModel):
+    email: Optional[str]
+    senha: Optional[str]
+    class Config:
+        schema_extra = {
+            "example": {
+                "email": "teste@email.com",
+                "senha": "123456",
             }
         }
 

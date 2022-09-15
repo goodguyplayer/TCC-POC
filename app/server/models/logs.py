@@ -20,7 +20,7 @@ class UpdateLogsModel(BaseModel):
     class Config:
         schema_extra = {
             "example": {
-                "FlowID": "John Doe",
+                "FlowID": "192.168.4.118-203.73.24.75-4504-80-6",
             }
         }
 

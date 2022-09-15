@@ -25,16 +25,16 @@ def logs_helper(log) -> dict:
 def getlogin_helper(login) -> dict:
     return {
         "id": str(login["_id"]),
-        "email": str(login["email"]),
+        "email": login["email"],
         "senha": login["senha"],
     }
 
 # Retrieve all logs present in the database
 async def retrieve_logs():
-    logs = []
+    someLogs = []
     async for logs in logs_collection.find():
-        logs.append(getlogs_helper(logs))
-    return logs
+        someLogs.append(getlogs_helper(logs))
+    return someLogs
 
 async def add_logs_data(logs_data: dict) -> dict:
     logs = await logs_collection.insert_one(logs_data)
@@ -67,10 +67,10 @@ async def delete_log(id: str):
 
 #Login
 async def retrieve_logins():
-    login = []
+    logins = []
     async for login in login_collection.find():
-        return getlogin_helper(login)
-        # login.append(getlogin_helper(login))
+        logins.append(getlogin_helper(login))
+        return logins
 
 
 async def retrieve_login(id: str) -> dict:

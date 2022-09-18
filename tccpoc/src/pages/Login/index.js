@@ -7,8 +7,6 @@ import axios from 'axios';
 
 
 const Login = () => {
-    // definindo estados iniciais 
-    // [] para manipular o estado das propriedades
     const [inputs, setInputs] = useState({});
     const [show, setShow] = useState(false);
     const navigate = useNavigate();
@@ -37,7 +35,7 @@ const Login = () => {
                 navigate("/inicio");
                 return;
             } else {
-                alert('email ou senha invalidos')
+                alert('email ou senha inválidos!')
             }
         } catch (e) {
             console.log(e)
@@ -45,7 +43,6 @@ const Login = () => {
     }
 
     return (
-        // onSubmit -> envia p formulario
         <form onSubmit={handleSubmit}>
             <div className="login">
                 <div className="login-right">

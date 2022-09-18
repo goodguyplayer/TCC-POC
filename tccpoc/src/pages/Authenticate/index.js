@@ -15,18 +15,11 @@ const Cadastro = () => {
     const handleChange = (event) => {
         const name = event.target.name;
         const value = event.target.value;
-
-        console.log("event.target: ", event.target)
-        console.log("name: ", name)
-        console.log("value: ", value)
-
         setInputs(values => ({ ...values, [name]: value }))
-
     }
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log(inputs);
     }
 
     const handleClick = (e) => {
@@ -38,20 +31,18 @@ const Cadastro = () => {
         try {
             const get = await axios.get(serverEndPoint);
             if (get.data.data[0].find(input => input.email === inputs.email) != undefined) {
-                alert("email ja cadastrado no sistema!")
+                alert("email já cadastrado no sistema!")
             } else {
                 const upload = await axios.post(`${serverEndPoint}`, { email: inputs.email, senha: inputs.password, confsenha: inputs.confirm_password })
-                console.log(upload)
+                alert("Usuário cadatrado com sucesso!");
                 navigate("/inicio");
             }
         } catch (e) {
             console.log(e)
         }
-        alert("Usuário cadatrado com sucesso!");
     }
 
     return (
-        // onSubmit -> envia p formulario
         <form onSubmit={handleSubmit}>
             <div className="login">
                 <div className="login-right">

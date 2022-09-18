@@ -5,7 +5,7 @@ import Cadastro from "../pages/Authenticate";
 import Home from "../pages/Home";
 import Alterar from "../pages/Alterar";
 
-// so tera acesso a home qdo der o login -> por isso é uma rota privada
+
 const Private = ({ Item }) => {
 
     const signed = true;

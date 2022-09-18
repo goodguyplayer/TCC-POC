@@ -7,8 +7,6 @@ import axios from 'axios';
 
 
 const Alterar = () => {
-    // definindo estados iniciais 
-    // [] para manipular o estado das propriedades
     const [inputs, setInputs] = useState({});
     const [show, setShow] = useState(false);
     const navigate = useNavigate();
@@ -35,11 +33,11 @@ const Alterar = () => {
             const get = await axios.get(BaseURL)
             if (get.data.data[0].find(input => input.email === inputs.email)) {
                 const put = await axios.put(`${serverEndPoint}/${get.data.data[0].find(input => input.email === inputs.email).id}`, { senha: inputs.password })
-                alert('senha trocado com sucesso')
+                alert('senha trocada com sucesso!')
                 navigate("/inicio");
                 return;
             } else {
-                alert('email nao cadastrado no sistema')
+                alert('email não cadastrado no sistema')
             }
         } catch (e) {
             console.log(e)
@@ -47,7 +45,6 @@ const Alterar = () => {
     }
 
     return (
-        // onSubmit -> envia p formulario
         <form onSubmit={handleSubmit}>
             <div className="login">
                 <div className="login-right">

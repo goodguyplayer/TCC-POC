@@ -70,7 +70,7 @@ async def retrieve_logins():
     logins = []
     async for login in login_collection.find():
         logins.append(getlogin_helper(login))
-        return logins
+    return logins
 
 
 async def retrieve_login(id: str) -> dict:

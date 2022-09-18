@@ -12,9 +12,8 @@ const Login = () => {
     const [inputs, setInputs] = useState({});
     const [show, setShow] = useState(false);
     const navigate = useNavigate();
-
-    var id = "631f3f0bc800c41e97a2dc3a";
-    const BaseURL = `http://127.0.0.1:8000/login/${id}`;
+    const serverEndPoint = 'http://127.0.0.1:8000/login'
+    const BaseURL = `${serverEndPoint}`;
 
     const handleChange = (event) => {
         const name = event.target.name;
@@ -32,15 +31,13 @@ const Login = () => {
     };
 
     const handleLogin = async () => {
-        var open = false;
         try {
-            const get = await axios.get(BaseURL)
-            console.log(get.data.data[0].senha);
-            if (get.data.data[0].email === inputs.email && get.data.data[0].senha === inputs.password) {
+            const get = await axios.get(BaseURL);
+            if (get.data.data[0].find(input => input.email === inputs.email) && get.data.data[0].find(input => input.senha === inputs.password)) {
                 navigate("/inicio");
                 return;
             } else {
-                open = true;
+                alert('email ou senha invalidos')
             }
         } catch (e) {
             console.log(e)
@@ -83,6 +80,8 @@ const Login = () => {
                     <button type="submit" onClick={handleLogin}>Entrar </button>
                     <h4>Não possui conta?</h4>
                     <Link to="/cadastrar" className="link-cadastro">&nbsp;<em>Cadastre-se </em></Link>
+                    <h4>Esqueceu sua senha?</h4>
+                    <Link to="/alterar" className="link-cadastro">&nbsp;<em>resetar senha? </em></Link>
                 </div>
             </div>
         </form>

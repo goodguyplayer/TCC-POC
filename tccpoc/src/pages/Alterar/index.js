@@ -1,32 +1,28 @@
 import React, { useState } from "react";
-import "./authenticate.css";
+import "./alterar.css";
 import { MdEmail, MdLock } from "react-icons/md";
 import { HiEye, HiEyeOff } from "react-icons/hi";
 import { Link, useNavigate } from "react-router-dom";
-import { AiOutlineUnlock } from "react-icons/ai"
 import axios from 'axios';
 
-const Cadastro = () => {
+
+const Alterar = () => {
+    // definindo estados iniciais 
+    // [] para manipular o estado das propriedades
     const [inputs, setInputs] = useState({});
     const [show, setShow] = useState(false);
     const navigate = useNavigate();
-    const serverEndPoint = 'http://127.0.0.1:8000/login';
+    const serverEndPoint = 'http://127.0.0.1:8000/login'
+    const BaseURL = `${serverEndPoint}`;
 
     const handleChange = (event) => {
         const name = event.target.name;
         const value = event.target.value;
-
-        console.log("event.target: ", event.target)
-        console.log("name: ", name)
-        console.log("value: ", value)
-
         setInputs(values => ({ ...values, [name]: value }))
-
     }
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log(inputs);
     }
 
     const handleClick = (e) => {
@@ -34,20 +30,20 @@ const Cadastro = () => {
         setShow(!show);
     };
 
-    const handleCreate = async () => {
+    const handleChangePassword = async () => {
         try {
-            const get = await axios.get(serverEndPoint);
-            if (get.data.data[0].find(input => input.email === inputs.email) != undefined) {
-                alert("email ja cadastrado no sistema!")
-            } else {
-                const upload = await axios.post(`${serverEndPoint}`, { email: inputs.email, senha: inputs.password, confsenha: inputs.confirm_password })
-                console.log(upload)
+            const get = await axios.get(BaseURL)
+            if (get.data.data[0].find(input => input.email === inputs.email)) {
+                const put = await axios.put(`${serverEndPoint}/${get.data.data[0].find(input => input.email === inputs.email).id}`, { senha: inputs.password })
+                alert('senha trocado com sucesso')
                 navigate("/inicio");
+                return;
+            } else {
+                alert('email nao cadastrado no sistema')
             }
         } catch (e) {
             console.log(e)
         }
-        alert("Usuário cadatrado com sucesso!");
     }
 
     return (
@@ -55,12 +51,12 @@ const Cadastro = () => {
         <form onSubmit={handleSubmit}>
             <div className="login">
                 <div className="login-right">
-                    <h1>Criar conta</h1>
+                    <h1>Trocar Senha</h1>
                     <div className="login-loginInputEmail">
                         <MdEmail />
                         <input
                             type="email"
-                            placeholder="Digite um email  "
+                            placeholder="Digite um email"
                             name="email"
                             value={inputs.email}
                             onChange={handleChange}
@@ -70,7 +66,7 @@ const Cadastro = () => {
                         <MdLock />
                         <input
                             type={show ? "text" : "password"}
-                            placeholder="Digite sua senha"
+                            placeholder="Digite sua senha nova senha"
                             name="password"
                             value={inputs.password}
                             onChange={handleChange}
@@ -83,31 +79,15 @@ const Cadastro = () => {
                             )}
                         </div>
                     </div>
-                    <div className="login-loginInputPassword">
-                        <AiOutlineUnlock />
-                        <input
-                            type={show ? "text" : "password"}
-                            placeholder="Confime sua senha"
-                            name="confirm_password"
-                            value={inputs.confirm_password}
-                            onChange={handleChange}
-                        />
-                        <div className="login-eye">
-                            {show ? (
-                                <HiEye size={20} onClick={handleClick} />
-                            ) : (
-                                <HiEyeOff size={20} onClick={handleClick} />
-                            )}
-                        </div>
-                    </div>
-                    <button type="submit" onClick={handleCreate}>Inscrever-se</button>
+                    <button type="submit" onClick={handleChangePassword}>Trocar Senha</button>
                     <h4>Já possui uma conta?</h4>
                     <Link to="/login" className="link-cadastro">&nbsp;<em>Entre </em></Link>
-
                 </div>
             </div>
         </form>
     );
-}
+};
 
-export default Cadastro;
+export default Alterar;
+
+

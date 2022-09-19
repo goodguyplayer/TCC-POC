@@ -7,51 +7,68 @@ import { AiOutlineUnlock } from "react-icons/ai"
 import axios from 'axios';
 
 const Cadastro = () => {
-    const [inputs, setInputs] = useState({});
-    const [show, setShow] = useState(false);
+    const [email, setInputEmail] = useState("");
+    const [senha, setInputSenha] = useState("");
+    const [confSenha, setInputConfSenha] = useState("");
+    const [showsenha, setShowSenha] = useState(false);
+    const [showconfsenha, setShowConfSenha] = useState(false);
     const navigate = useNavigate();
     const serverEndPoint = 'http://127.0.0.1:8000/login';
 
-    const handleChange = (event) => {
-        const name = event.target.name;
-        const value = event.target.value;
+    const handleChangeEmail = (event) => {
+        setInputEmail(event.target.value);
+    }
 
-        console.log("event.target: ", event.target)
-        console.log("name: ", name)
-        console.log("value: ", value)
+    const handleChangeSenha = (event) => {
+        setInputSenha(event.target.value);
+    }
 
-        setInputs(values => ({ ...values, [name]: value }))
-
+    const handleChangeConfSenha = (event) => {
+        setInputConfSenha(event.target.value);
     }
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log(inputs);
     }
 
-    const handleClick = (e) => {
+    const handleClickSenha = (e) => {
         e.preventDefault();
-        setShow(!show);
+        setShowSenha(!showsenha);
     };
+
+    const handleClickConfSenha = (e) => {
+        e.preventDefault();
+        setShowConfSenha(!showconfsenha);
+    };
+
 
     const handleCreate = async () => {
         try {
-            const get = await axios.get(serverEndPoint);
-            if (get.data.data[0].find(input => input.email === inputs.email) != undefined) {
-                alert("email ja cadastrado no sistema!")
-            } else {
-                const upload = await axios.post(`${serverEndPoint}`, { email: inputs.email, senha: inputs.password, confsenha: inputs.confirm_password })
-                console.log(upload)
-                navigate("/inicio");
+            if (senha !== confSenha) {
+                alert("senhas diferentes")
+                return;
             }
+            if (senha === "" || confSenha === "" || email === "") {
+                alert("nao pode ter um ou mais valores dos campos em branco")
+                return;
+            }
+            const get = await axios.get(serverEndPoint);
+            for (let i = 0; i < get.data.data[0].length; i++) {
+                if (get.data.data[0][i].email === email) {
+                    alert("email já cadastrado no sistema!")
+                    return;
+                }
+            }
+            await axios.post(`${serverEndPoint}`, { email: email, senha: senha, confsenha: confSenha })
+            alert("Usuário cadatrado com sucesso!");
+            navigate("/login");
+            return;
         } catch (e) {
             console.log(e)
         }
-        alert("Usuário cadatrado com sucesso!");
     }
 
     return (
-        // onSubmit -> envia p formulario
         <form onSubmit={handleSubmit}>
             <div className="login">
                 <div className="login-right">
@@ -62,41 +79,41 @@ const Cadastro = () => {
                             type="email"
                             placeholder="Digite um email  "
                             name="email"
-                            value={inputs.email}
-                            onChange={handleChange}
+                            value={email}
+                            onChange={handleChangeEmail}
                         />
                     </div>
                     <div className="login-loginInputPassword">
                         <MdLock />
                         <input
-                            type={show ? "text" : "password"}
+                            type={showsenha ? "text" : "password"}
                             placeholder="Digite sua senha"
                             name="password"
-                            value={inputs.password}
-                            onChange={handleChange}
+                            value={senha}
+                            onChange={handleChangeSenha}
                         />
                         <div className="login-eye">
-                            {show ? (
-                                <HiEye size={20} onClick={handleClick} />
+                            {showsenha ? (
+                                <HiEye size={20} onClick={handleClickSenha} />
                             ) : (
-                                <HiEyeOff size={20} onClick={handleClick} />
+                                <HiEyeOff size={20} onClick={handleClickSenha} />
                             )}
                         </div>
                     </div>
                     <div className="login-loginInputPassword">
                         <AiOutlineUnlock />
                         <input
-                            type={show ? "text" : "password"}
+                            type={showconfsenha ? "text" : "password"}
                             placeholder="Confime sua senha"
                             name="confirm_password"
-                            value={inputs.confirm_password}
-                            onChange={handleChange}
+                            value={confSenha}
+                            onChange={handleChangeConfSenha}
                         />
                         <div className="login-eye">
-                            {show ? (
-                                <HiEye size={20} onClick={handleClick} />
+                            {showconfsenha ? (
+                                <HiEye size={20} onClick={handleClickConfSenha} />
                             ) : (
-                                <HiEyeOff size={20} onClick={handleClick} />
+                                <HiEyeOff size={20} onClick={handleClickConfSenha} />
                             )}
                         </div>
                     </div>

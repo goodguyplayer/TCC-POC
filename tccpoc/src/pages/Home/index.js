@@ -7,7 +7,6 @@ const Home = () =>{
     const handleUpload = async () => {
         try {
           const upload = await axios.post('http://127.0.0.1:8000/logs', { FlowID: "192.168.4.118-203.73.24.75-4504-80-6" })
-          console.log(upload)
         } catch (e) {
           console.log(e)
         }

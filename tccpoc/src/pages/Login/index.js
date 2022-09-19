@@ -7,16 +7,19 @@ import axios from 'axios';
 
 
 const Login = () => {
-    const [inputs, setInputs] = useState({});
+    const [email, setInputEmail] = useState("");
+    const [senha, setInputSenha] = useState("");
     const [show, setShow] = useState(false);
-    const navigate = useNavigate();
+    const navigate = useNavigate("");
     const serverEndPoint = 'http://127.0.0.1:8000/login'
     const BaseURL = `${serverEndPoint}`;
 
-    const handleChange = (event) => {
-        const name = event.target.name;
-        const value = event.target.value;
-        setInputs(values => ({ ...values, [name]: value }))
+    const handleChangeEmail = (event) => {
+        setInputEmail(event.target.value);
+    }
+
+    const handleChangeSenha = (event) => {
+        setInputSenha(event.target.value);
     }
 
     const handleSubmit = (event) => {
@@ -31,12 +34,13 @@ const Login = () => {
     const handleLogin = async () => {
         try {
             const get = await axios.get(BaseURL);
-            if (get.data.data[0].find(input => input.email === inputs.email) && get.data.data[0].find(input => input.senha === inputs.password)) {
-                navigate("/inicio");
-                return;
-            } else {
-                alert('email ou senha inválidos!')
+            for (let i = 0; i < get.data.data[0].length; i ++){
+                if (get.data.data[0][i].email === email && get.data.data[0][i].senha === senha) {
+                    navigate("/inicio");
+                    return;
+                }
             }
+            alert('email ou senha inválidos!')
         } catch (e) {
             console.log(e)
         }
@@ -53,8 +57,8 @@ const Login = () => {
                             type="email"
                             placeholder="Digite um email "
                             name="email"
-                            value={inputs.email}
-                            onChange={handleChange}
+                            value={email}
+                            onChange={handleChangeEmail}
                         />
                     </div>
                     <div className="login-loginInputPassword">
@@ -63,8 +67,8 @@ const Login = () => {
                             type={show ? "text" : "password"}
                             placeholder="Digite sua senha"
                             name="password"
-                            value={inputs.password}
-                            onChange={handleChange}
+                            value={senha}
+                            onChange={handleChangeSenha}
                         />
                         <div className="login-eye">
                             {show ? (

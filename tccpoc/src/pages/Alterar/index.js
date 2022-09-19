@@ -7,16 +7,19 @@ import axios from 'axios';
 
 
 const Alterar = () => {
-    const [inputs, setInputs] = useState({});
+    const [email, setInputEmail] = useState("");
+    const [senha, setInputSenha] = useState("");
     const [show, setShow] = useState(false);
     const navigate = useNavigate();
     const serverEndPoint = 'http://127.0.0.1:8000/login'
     const BaseURL = `${serverEndPoint}`;
 
-    const handleChange = (event) => {
-        const name = event.target.name;
-        const value = event.target.value;
-        setInputs(values => ({ ...values, [name]: value }))
+    const handleChangeEmail = (event) => {
+        setInputEmail(event.target.value);
+    }
+
+    const handleChangeSenha = (event) => {
+        setInputSenha(event.target.value);
     }
 
     const handleSubmit = (event) => {
@@ -31,14 +34,15 @@ const Alterar = () => {
     const handleChangePassword = async () => {
         try {
             const get = await axios.get(BaseURL)
-            if (get.data.data[0].find(input => input.email === inputs.email)) {
-                const put = await axios.put(`${serverEndPoint}/${get.data.data[0].find(input => input.email === inputs.email).id}`, { senha: inputs.password })
-                alert('senha trocada com sucesso!')
-                navigate("/inicio");
-                return;
-            } else {
-                alert('email não cadastrado no sistema')
+            for (let i = 0; i < get.data.data[0].length; i++) {
+                if (get.data.data[0][i].email === email) {
+                    await axios.put(`${serverEndPoint}/${get.data.data[0][i].id}`, { senha: senha })
+                    alert('senha trocada com sucesso!')
+                    navigate("/login");
+                    return;
+                }
             }
+            alert('email não cadastrado no sistema')
         } catch (e) {
             console.log(e)
         }
@@ -55,8 +59,8 @@ const Alterar = () => {
                             type="email"
                             placeholder="Digite um email"
                             name="email"
-                            value={inputs.email}
-                            onChange={handleChange}
+                            value={email}
+                            onChange={handleChangeEmail}
                         />
                     </div>
                     <div className="login-loginInputPassword">
@@ -65,8 +69,8 @@ const Alterar = () => {
                             type={show ? "text" : "password"}
                             placeholder="Digite sua senha nova senha"
                             name="password"
-                            value={inputs.password}
-                            onChange={handleChange}
+                            value={senha}
+                            onChange={handleChangeSenha}
                         />
                         <div className="login-eye">
                             {show ? (

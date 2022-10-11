@@ -9,7 +9,6 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 @app.route("/IA", methods=["POST"])
 def read():
     try:
-        print(request.get_data())
         data = json.loads(request.get_data())
         print(data)
         return "Hello, World!"

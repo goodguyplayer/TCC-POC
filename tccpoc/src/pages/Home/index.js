@@ -29,18 +29,15 @@ const Home = () => {
           setValues(valuesArray);
 
           var value = JSON.parse(JSON.stringify(results.data));
-          console.log(value[0])
-          console.log(typeof(value))
-          const upload = await axios.post('http://127.0.0.1:8000/logs',  value[0])
-          await axios.post('http://127.0.0.1:5000/IA', value[0])
+          const upload = await axios.post('http://127.0.0.1:8000/logs', value[0])
+          const resposta = await axios.post('http://127.0.0.1:5000/IA', value)
+          console.log(resposta)
         },
       });
-      //const upload = await axios.post('http://127.0.0.1:8000/logs', { FlowID: "192.168.4.118-203.73.24.75-4504-80-6" })
-      // await axios.post('http://127.0.0.1:5000/IA', { FlowID: "192.168.4.118-203.73.24.75-4504-80-7" })
     } catch (e) {
       console.log(e)
     }
-    //alert('Uploading...');
+    alert('Uploading...');
   }
 
   return (

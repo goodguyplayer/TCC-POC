@@ -10,60 +10,32 @@ database = client.Projeto_TCC
 logs_collection = database.get_collection("logs")
 login_collection = database.get_collection("login")
 
-def getlogs_helper(log) -> dict:
-    return {
-        "id": str(log["_id"]),
-        "SrcPort": log["Src Port"],
-        "DstPort": log["Dst Port"], 
-        "TotFwdPkts": log["Tot Fwd Pkts"],
-        "FwdPktLenMax": log["Fwd Pkt Len Max"],
-        "FwdPktLenMin": log["Fwd Pkt Len Min"],
-        "FwdPktLenMean": log["Fwd Pkt Len Mean"],
-        "FwdPktLenStd": log["Fwd Pkt Len Std"],
-        "FlowIATMean": log["Flow IAT Mean"],
-        "FlowIATStd": log["Flow IAT Std"],
-        "FlowIATMax": log["Flow IAT Max"],
-        "FlowIATMin": log["Flow IAT Min"],
-        "FwdIATTot": log["Fwd IAT Tot"],
-        "FwdIATMean": log["Fwd IAT Mean"],
-        "FwdIATStd": log["Fwd IAT Std"],
-        "FwdIATMax": log["Fwd IAT Max"],
-        "FwdIATMin": log["Fwd IAT Min"],
-        "FwdPktss": log["Fwd Pkts/s"],
-        "SYNFlagCnt": log["SYN Flag Cnt"],
-        "RSTFlagCnt": log["RST Flag Cnt"],
-        "PSHFlagCnt": log["PSH Flag Cnt"],
-        "ACKFlagCnt": log["ACK Flag Cnt"],
-        "CWEFlagCount": log["CWE Flag Count"],
-        "ECEFlagCnt": log["ECE Flag Cnt"],
-    }
-
 def logs_helper(log) -> dict:
     return {
         "id": str(log["_id"]),
-        "SrcPort": log["SrcPort"],
-        "DstPort": log["DstPort"], 
-        "TotFwdPkts": log["TotFwdPkts"],
-        "FwdPktLenMax": log["FwdPktLenMax"],
-        "FwdPktLenMin": log["FwdPktLenMin"],
-        "FwdPktLenMean": log["FwdPktLenMean"],
-        "FwdPktLenStd": log["FwdPktLenStd"],
-        "FlowIATMean": log["FlowIATMean"],
-        "FlowIATStd": log["FlowIATStd"],
-        "FlowIATMax": log["FlowIATMax"],
-        "FlowIATMin": log["FlowIATMin"],
-        "FwdIATTot": log["FwdIATTot"],
-        "FwdIATMean": log["FwdIATMean"],
-        "FwdIATStd": log["FwdIATStd"],
-        "FwdIATMax": log["FwdIATMax"],
-        "FwdIATMin": log["FwdIATMin"],
-        "FwdPktss": log["FwdPktss"],
-        "SYNFlagCnt": log["SYNFlagCnt"],
-        "RSTFlagCnt": log["RSTFlagCnt"],
-        "PSHFlagCnt": log["PSHFlagCnt"],
-        "ACKFlagCnt": log["ACKFlagCnt"],
-        "CWEFlagCount": log["CWEFlagCount"],
-        "ECEFlagCnt": log["ECEFlagCnt"],
+        "SrcPort": int(log["SrcPort"]),
+        "DstPort": int(log["DstPort"]), 
+        "TotFwdPkts": int(log["TotFwdPkts"]),
+        "FwdPktLenMax": float(log["FwdPktLenMax"]),
+        "FwdPktLenMin": float(log["FwdPktLenMin"]),
+        "FwdPktLenMean": float(log["FwdPktLenMean"]),
+        "FwdPktLenStd": float(log["FwdPktLenStd"]),
+        "FlowIATMean": float(log["FlowIATMean"]),
+        "FlowIATStd": float(log["FlowIATStd"]),
+        "FlowIATMax": float(log["FlowIATMax"]),
+        "FlowIATMin": float(log["FlowIATMin"]),
+        "FwdIATTot": float(log["FwdIATTot"]),
+        "FwdIATMean": float(log["FwdIATMean"]),
+        "FwdIATStd": float(log["FwdIATStd"]),
+        "FwdIATMax": float(log["FwdIATMax"]),
+        "FwdIATMin": float(log["FwdIATMin"]),
+        "FwdPktss": float(log["FwdPktss"]),
+        "SYNFlagCnt": int(log["SYNFlagCnt"]),
+        "RSTFlagCnt": int(log["RSTFlagCnt"]),
+        "PSHFlagCnt": int(log["PSHFlagCnt"]),
+        "ACKFlagCnt": int(log["ACKFlagCnt"]),
+        "CWEFlagCount": int(log["CWEFlagCount"]),
+        "ECEFlagCnt": int(log["ECEFlagCnt"]),
     }
 
 def getlogin_helper(login) -> dict:
@@ -77,7 +49,7 @@ def getlogin_helper(login) -> dict:
 async def retrieve_logs():
     someLogs = []
     async for logs in logs_collection.find():
-        someLogs.append(getlogs_helper(logs))
+        someLogs.append(logs_helper(logs))
     return someLogs
 
 async def add_logs_data(logs_data: dict) -> dict:
@@ -88,7 +60,7 @@ async def add_logs_data(logs_data: dict) -> dict:
 async def retrieve_log(id: str) -> dict:
     logs = await logs_collection.find_one({"_id": ObjectId(id)})
     if logs:
-        return getlogs_helper(logs)
+        return logs_helper(logs)
 
 async def update_logs(id: str, data: dict):
     # Return false if an empty request body is sent.

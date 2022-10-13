@@ -37,7 +37,7 @@ const Home = () => {
     } catch (e) {
       console.log(e)
     }
-    alert('Uploading...');
+    //alert('Uploading...');
   }
 
   return (

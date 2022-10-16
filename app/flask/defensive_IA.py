@@ -33,7 +33,7 @@ def read():
         predict = model.predict(testpd)
         print(predict)
         print(predict[0][0])
-        return str(predict[0][0])
+        return str(predict)
     except:
         print("An exception occurred: ", sys.exc_info()[0])
         return str(sys.exc_info()[0])

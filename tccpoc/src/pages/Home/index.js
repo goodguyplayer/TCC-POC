@@ -29,7 +29,9 @@ const Home = () => {
           setValues(valuesArray);
 
           var value = JSON.parse(JSON.stringify(results.data));
-          const upload = await axios.post('http://127.0.0.1:8000/logs', value[0])
+          for (let i = 0; i < value.length; i++) {
+            const upload = await axios.post('http://127.0.0.1:8000/logs', value[i])
+          }
           const resposta = await axios.post('http://127.0.0.1:5000/IA', value)
           console.log(resposta)
         },
@@ -37,7 +39,7 @@ const Home = () => {
     } catch (e) {
       console.log(e)
     }
-    alert('Uploading...');
+    //alert('Uploading...');
   }
 
   return (

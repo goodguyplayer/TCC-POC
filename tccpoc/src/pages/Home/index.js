@@ -12,6 +12,9 @@ const Home = () => {
   //State to store the values
   const [values, setValues] = useState([]);
 
+  const [myDDosList, setDDosList] = useState([]);
+  const [myBenignLists, setBenignLists] = useState([]);
+
   const handleUpload = async (event) => {
     try {
       Papa.parse(event.target.files[0], {
@@ -33,13 +36,26 @@ const Home = () => {
             const upload = await axios.post('http://127.0.0.1:8000/logs', value[i])
           }
           const resposta = await axios.post('http://127.0.0.1:5000/IA', value)
-          console.log(resposta)
+          var splitResposta = resposta.data.split(' ')
+          var parse = JSON.parse(splitResposta)
+
+          for (let i = 0; i < parse.length; i++) {
+            if (parse[i] >= 0.8) {
+              myDDosList.push({ DDoS: parse[i][0] })
+            } else {
+              myBenignLists.push({ Benign: parse[i][0] })
+            }
+          }
+          
+          setDDosList(myDDosList)
+          setBenignLists(myBenignLists)
+          console.log(myDDosList)
+          console.log(myBenignLists)
         },
       });
     } catch (e) {
       console.log(e)
     }
-    //alert('Uploading...');
   }
 
   return (

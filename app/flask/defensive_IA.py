@@ -29,10 +29,7 @@ def read():
                 testpd[item] = testpd[item].astype(float)
                 
         model = keras.models.load_model('./AIV2.h5')
-        print(model)
         predict = model.predict(testpd)
-        print(predict)
-        print(predict[0][0])
         return str(predict)
     except:
         print("An exception occurred: ", sys.exc_info()[0])

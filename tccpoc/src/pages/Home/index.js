@@ -42,7 +42,7 @@ const Home = () => {
         </label>
         {data?.length ?
           <div style={{ margin: '20px' }}>
-            <DataTable rows={data?.filter(({type}) => type === 'DDOS')} />
+            <DataTable rows={data?.filter(({type}) => type === 'DDoS')} />
           </div>
           : null}
         {data?.length ?

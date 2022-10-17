@@ -14,6 +14,7 @@ const Home = () => {
 
   const [myDDosList, setDDosList] = useState([]);
   const [myBenignLists, setBenignLists] = useState([]);
+  const [RowData, setRowDataList] = useState([]);
 
   const handleUpload = async (event) => {
     try {
@@ -36,9 +37,8 @@ const Home = () => {
             const upload = await axios.post('http://127.0.0.1:8000/logs', value[i])
           }
           const resposta = await axios.post('http://127.0.0.1:5000/IA', value)
-          var splitResposta = resposta.data.split(' ')
+          var splitResposta = resposta.data.split('\n')
           var parse = JSON.parse(splitResposta)
-
           for (let i = 0; i < parse.length; i++) {
             if (parse[i] >= 0.8) {
               myDDosList.push({ DDoS: parse[i][0] })
@@ -46,11 +46,11 @@ const Home = () => {
               myBenignLists.push({ Benign: parse[i][0] })
             }
           }
-          
           setDDosList(myDDosList)
           setBenignLists(myBenignLists)
-          console.log(myDDosList)
-          console.log(myBenignLists)
+          RowData.push(myDDosList)
+          RowData.push(myBenignLists)
+          setRowDataList(RowData)
         },
       });
     } catch (e) {

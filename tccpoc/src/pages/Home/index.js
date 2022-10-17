@@ -1,20 +1,12 @@
+import React, { useEffect, useState } from 'react';
 import './home.css';
 import axios from 'axios';
 import { Button, Grid, Input, Typography } from "@mui/material/";
-import { useState } from 'react';
-import React from 'react';
 import Papa from "papaparse";
+import { DataTable } from '../../components/Table';
 
 const Home = () => {
-  const [parsedData, setParsedData] = useState([]);
-  //State to store table Column name
-  const [tableRows, setTableRows] = useState([]);
-  //State to store the values
-  const [values, setValues] = useState([]);
-
-  const [myDDosList, setDDosList] = useState([]);
-  const [myBenignLists, setBenignLists] = useState([]);
-  const [RowData, setRowDataList] = useState([]);
+  const [data, setData] = useState([])
 
   const handleUpload = async (event) => {
     try {
@@ -22,35 +14,13 @@ const Home = () => {
         header: true,
         skipEmptyLines: true,
         complete: async function (results) {
-          const rowsArray = [];
-          const valuesArray = [];
-          results.data.map((d) => {
-            rowsArray.push(Object.keys(d));
-            valuesArray.push(Object.values(d));
-          });
-          setParsedData(results.data);
-          setTableRows(rowsArray[0]);
-          setValues(valuesArray);
-
-          var value = JSON.parse(JSON.stringify(results.data));
+          const value = JSON.parse(JSON.stringify(results.data));
           for (let i = 0; i < value.length; i++) {
-            const upload = await axios.post('http://127.0.0.1:8000/logs', value[i])
+            await axios.post('http://127.0.0.1:8000/logs', value[i])
           }
-          const resposta = await axios.post('http://127.0.0.1:5000/IA', value)
-          var splitResposta = resposta.data.split('\n')
-          var parse = JSON.parse(splitResposta)
-          for (let i = 0; i < parse.length; i++) {
-            if (parse[i] >= 0.8) {
-              myDDosList.push({ DDoS: parse[i][0] })
-            } else {
-              myBenignLists.push({ Benign: parse[i][0] })
-            }
-          }
-          setDDosList(myDDosList)
-          setBenignLists(myBenignLists)
-          RowData.push(myDDosList)
-          RowData.push(myBenignLists)
-          setRowDataList(RowData)
+          const response = await axios.post('http://127.0.0.1:5000/IA', value)
+          const parsedData = JSON.parse(response.data.split('\n'))
+          setData(parsedData?.map((value) => ({ value: value[0], type: value[0] >= 0.8 ? 'DDoS' : 'Benign' })))
         },
       });
     } catch (e) {
@@ -59,7 +29,7 @@ const Home = () => {
   }
 
   return (
-    <Grid container spacing={0} direction="column" alignItems="center" justifyContent="center" style={{ minHeight: '100vh' }} >
+    <Grid container spacing={2} direction="column" alignItems="top" justifyContent="top" style={{ minHeight: '100vh' }}>
       <Grid item xs={3}>
         <Typography variant="h2" style={{ marginBottom: '30px' }}>
           Enviar o arquivo csv para a inteligencia Artificial
@@ -70,11 +40,20 @@ const Home = () => {
             Upload
           </Button>
         </label>
+        {data?.length ?
+          <div style={{ margin: '20px' }}>
+            <DataTable rows={data?.filter(({type}) => type === 'DDOS')} />
+          </div>
+          : null}
+        {data?.length ?
+          <div style={{ margin: '20px' }}>
+            <DataTable rows={data?.filter(({type}) => type === 'Benign')} />
+          </div>
+          : null}
       </Grid>
     </Grid>
   );
 }
-
 
 
 export default Home;

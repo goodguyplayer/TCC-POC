@@ -1,1 +1,1 @@
-web: gunicorn --chdir app/flask defensive_IA.py:app
+web: gunicorn defensive_IA.py:app

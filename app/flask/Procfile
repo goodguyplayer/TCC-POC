@@ -1,0 +1,1 @@
+web: gunicorn defensive_IA.py:app

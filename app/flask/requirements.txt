@@ -1,11 +1,5 @@
-fastapi==0.73.0
 Flask==2.1.2
-motor==2.5.1
-uvicorn==0.17.4
 Flask-Cors==3.0.10
 tensorflow==2.9.1
-tensorflow-estimator==2.9.0
-tensorflow-io-gcs-filesystem==0.26.0
 pandas==1.4.2
-pywin32==305
-pywinpty==2.0.5
+msrest

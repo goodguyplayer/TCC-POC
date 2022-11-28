@@ -10,11 +10,6 @@ import numpy as np
 app = Flask(__name__)
 cors = CORS(app)
 
-key = os.environ["COG_SERVICE_KEY"]
-region = os.environ["COG_SERVICE_REGION"]
-endpoint = os.environ["ENDPOINT"]
-COG_endpoint = os.environ["COG_SERVICE_ENDPOINT"]
-
 app.config['CORS_HEADERS'] = 'Content-Type'
 
 @app.route("/", methods=["GET"])
